@@ -13,13 +13,13 @@ public class TicketController {
     @Autowired private TicketRepository ticketRepo;
     @Autowired private ScheduleRepository scheduleRepo;
 
-    // @PostMapping
-    // public ResponseEntity<?> bookTicket(@RequestBody Ticket ticket) {
-    //     if (ticket.getSchedule() == null || scheduleRepo.findById(ticket.getSchedule().getId()).isEmpty()) {
-    //         return ResponseEntity.badRequest().body("Invalid Schedule ID");
-    //     }
-    //     return ResponseEntity.ok(ticketRepo.save(ticket));
-    // }
+    @PostMapping()
+    public ResponseEntity<?> bookTicket(@RequestBody Ticket ticket) {
+        if (ticket.getSchedule() == null || scheduleRepo.findById(ticket.getSchedule().getId()).isEmpty()) {
+            return ResponseEntity.badRequest().body("Invalid Schedule ID");
+        }
+        return ResponseEntity.ok(ticketRepo.save(ticket));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> getTicket(@PathVariable Long id) {
@@ -28,15 +28,15 @@ public class TicketController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<String> cancelTicket(@PathVariable Long id) {
-    //     Optional<Ticket> ticketOpt = ticketRepo.findById(id);
-    //     if (ticketOpt.isEmpty()) return ResponseEntity.notFound().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> cancelTicket(@PathVariable Long id) {
+        Optional<Ticket> ticketOpt = ticketRepo.findById(id);
+        if (ticketOpt.isEmpty()) return ResponseEntity.notFound().build();
 
-    //     Ticket ticket = ticketOpt.get();
-    //     ticket.setCancelled(true);
-    //     ticketRepo.save(ticket);
-    //     return ResponseEntity.ok("Ticket cancelled successfully");
-    // }
+        Ticket ticket = ticketOpt.get();
+        ticket.setCancelled(true);
+        ticketRepo.save(ticket);
+        return ResponseEntity.ok("Ticket cancelled successfully");
+    }
 }
 

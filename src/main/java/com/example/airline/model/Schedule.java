@@ -6,14 +6,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name="Books")
+@Table(name="Schedule")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
 @ToString
 public class Schedule {
-     @Id @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
     private LocalDate date;
 

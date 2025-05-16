@@ -2,6 +2,7 @@ package com.example.airline.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,8 +58,8 @@ public class FlightController {
     }
 
     @GetMapping("/{id}/schedules")
-    public List<Schedule> getSchedules(@PathVariable Long id, @RequestParam LocalDate dates) {
-        return scheduleRepo.findByFlightIdAndDate(id, dates);
+    public List<Schedule> getSchedules(@PathVariable Long id, @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return scheduleRepo.findByFlightIdAndDate(id, date);
     }
 }
 
