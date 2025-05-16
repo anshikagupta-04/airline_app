@@ -1,26 +1,26 @@
-# Stage 1: Build with Maven
-FROM maven:3.9.2-eclipse-temurin-17 AS builder
+# Stage 1: Build the application using Maven
+FROM maven:3.9.5-eclipse-temurin-17 AS build
+
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy project files
-COPY pom.xml .
-RUN mvn dependency:go-offline
+# Copy the source code to the container
+COPY . .
 
-COPY src ./src
+# Build the project (skip tests if needed)
 RUN mvn clean package -DskipTests
 
-# Stage 2: Run the JAR
-FROM eclipse-temurin:17
+# Stage 2: Create a smaller runtime image using JDK only
+FROM eclipse-temurin:17-jdk
+
+# Set working directory
 WORKDIR /app
 
-# Create volume to persist H2 database file
-VOLUME /data/h2
+# Copy the jar from the previous stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Copy JAR from builder stage
-COPY --from=builder /app/target/*.jar app.jar
-
-# Expose port 8080
+# Expose the port the app runs on (change if needed)
 EXPOSE 8080
 
-# Run the app
+# Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
