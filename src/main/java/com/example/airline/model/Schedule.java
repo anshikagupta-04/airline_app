@@ -1,5 +1,7 @@
 package com.example.airline.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,9 +13,10 @@ import lombok.*;
 @Getter
 @ToString
 public class Schedule {
-    @Id @GeneratedValue
+     @Id @GeneratedValue
     private Long id;
-    private String name;
-    private String source;
-    private String destination;
+    private LocalDate date;
+
+    @ManyToOne
+    private Flight flight;
 }
