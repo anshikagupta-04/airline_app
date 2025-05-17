@@ -19,6 +19,7 @@ public class FlightController {
 
     @PostMapping()
     public ResponseEntity<Flight> addFlight(@RequestBody Flight flight) {
+        System.out.println("inside post req");
         try {
             Flight savedFlight = flightRepo.save(flight);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedFlight);
